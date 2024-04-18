@@ -11,7 +11,9 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, MediaUpload } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -30,9 +32,28 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Custom Image – hello from the editor!', 'custom-image' ) }
-		</p>
-	);
+    const [image, setImage] = useState();
+    const onSelectImage = (media) => {
+        setImage(media);
+    };
+    return (
+        <div {...useBlockProps()}>
+            <MediaUpload
+                onSelect={onSelectImage}
+                allowedTypes={['image']}
+                value={image?.id}
+                render={({ open }) => (
+                    <Button onClick={open}>
+                        {image ? 'Change Image' : 'Select Image'}
+                    </Button>
+                )}
+            />
+            {image && (
+                <img
+                    src={image.url}
+                    alt={__('Selected image', 'custom-image')}
+                />
+            )}
+        </div>
+    );
 }
