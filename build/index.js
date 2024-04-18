@@ -57,26 +57,50 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {Element} Element to render.
  */
-function Edit() {
-  const [image, setImage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)();
+function Edit({
+  attributes,
+  setAttributes
+}) {
+  const [image, setImage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(attributes.imageUrl);
+  const [isPortrait, setIsPortrait] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(attributes.isPortrait || false);
   const onSelectImage = media => {
-    setImage(media);
+    setImage(media.url);
+    setAttributes({
+      imageUrl: media.url,
+      imageId: media.id
+    });
   };
+  const toggleOrientation = () => {
+    setIsPortrait(!isPortrait);
+    setAttributes({
+      isPortrait: !isPortrait
+    });
+  };
+  const orientationLabel = isPortrait ? 'Switch to Landscape' : 'Switch to Portrait';
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
     onSelect: onSelectImage,
     allowedTypes: ['image'],
-    value: image?.id,
+    value: attributes.imageId,
     render: ({
       open
     }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
       onClick: open
     }, image ? 'Change Image' : 'Select Image')
   }), image && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    src: image.url,
-    alt: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Selected image', 'custom-image')
-  }));
+    src: image,
+    alt: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Selected image', 'custom-image'),
+    className: isPortrait ? 'portrait' : 'landscape'
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      marginTop: '20px'
+    }
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: orientationLabel,
+    checked: isPortrait,
+    onChange: toggleOrientation
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Toggle the switch to change the orientation of the image. Current mode: ', 'custom-image'), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, isPortrait ? 'Portrait' : 'Landscape'), ".")));
 }
 
 /***/ }),

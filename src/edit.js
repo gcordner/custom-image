@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps, MediaUpload } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
+import { Button, ToggleControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
@@ -31,17 +31,28 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
-    const [image, setImage] = useState();
+export default function Edit({ attributes, setAttributes }) {
+    const [image, setImage] = useState(attributes.imageUrl);
+    const [isPortrait, setIsPortrait] = useState(attributes.isPortrait || false);
+
     const onSelectImage = (media) => {
-        setImage(media);
+        setImage(media.url);
+        setAttributes({ imageUrl: media.url, imageId: media.id });
     };
+
+    const toggleOrientation = () => {
+        setIsPortrait(!isPortrait);
+        setAttributes({ isPortrait: !isPortrait });
+    };
+
+    const orientationLabel = isPortrait ? 'Switch to Landscape' : 'Switch to Portrait';
+
     return (
         <div {...useBlockProps()}>
             <MediaUpload
                 onSelect={onSelectImage}
                 allowedTypes={['image']}
-                value={image?.id}
+                value={attributes.imageId}
                 render={({ open }) => (
                     <Button onClick={open}>
                         {image ? 'Change Image' : 'Select Image'}
@@ -50,10 +61,22 @@ export default function Edit() {
             />
             {image && (
                 <img
-                    src={image.url}
+                    src={image}
                     alt={__('Selected image', 'custom-image')}
+                    className={isPortrait ? 'portrait' : 'landscape'}
                 />
             )}
+            <div style={{ marginTop: '20px' }}>
+                <ToggleControl
+                    label={orientationLabel}
+                    checked={isPortrait}
+                    onChange={toggleOrientation}
+                />
+                <p>
+                    {__('Toggle the switch to change the orientation of the image. Current mode: ', 'custom-image')}
+                    <strong>{isPortrait ? 'Portrait' : 'Landscape'}</strong>.
+                </p>
+            </div>
         </div>
     );
 }
