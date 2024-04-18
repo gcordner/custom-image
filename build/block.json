@@ -3,10 +3,10 @@
   "apiVersion": 3,
   "name": "create-block/custom-image",
   "version": "0.1.0",
-  "title": "Gpc Image",
+  "title": "Custom Image",
   "category": "widgets",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Custom image block that adds classes for portrait and landscape images.",
   "example": {},
   "supports": {
     "html": false

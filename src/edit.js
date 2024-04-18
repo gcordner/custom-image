@@ -32,7 +32,7 @@ import './editor.scss';
 export default function Edit() {
 	return (
 		<p { ...useBlockProps() }>
-			{ __( 'Gpc Image – hello from the editor!', 'custom-image' ) }
+			{ __( 'Custom Image – hello from the editor!', 'custom-image' ) }
 		</p>
 	);
 }
