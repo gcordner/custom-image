@@ -1,13 +1,9 @@
-import { RichText } from '@wordpress/block-editor';
-
 const save = ({ attributes }) => {
-    const { imageUrl, altText, isPortrait, caption } = attributes;
+    const { imageUrl, isPortrait, altText, caption } = attributes;
     return (
-        <figure className={`wp-block-custom-image ${isPortrait ? 'portrait' : 'landscape'}`}>
+        <figure className={`wp-block-image ${isPortrait ? 'portrait' : 'landscape'} size-large`}>
             <img src={imageUrl} alt={altText || ''} />
-            {caption && (
-                <RichText.Content tagName="figcaption" value={caption} />
-            )}
+            {caption && <figcaption>{caption}</figcaption>}
         </figure>
     );
 };
