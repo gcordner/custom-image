@@ -24,54 +24,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
 
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
-
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
 
 
 
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
 
-
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
- * @return {Element} Element to render.
- */
 function Edit({
   attributes,
   setAttributes
 }) {
-  const [image, setImage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(attributes.imageUrl);
-  const [isPortrait, setIsPortrait] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(attributes.isPortrait || false);
+  const {
+    imageUrl,
+    imageId,
+    isPortrait,
+    altText,
+    caption
+  } = attributes;
   const onSelectImage = media => {
-    setImage(media.url);
     setAttributes({
       imageUrl: media.url,
-      imageId: media.id
+      imageId: media.id,
+      altText: media.alt || '',
+      caption: media.caption || ''
     });
   };
   const toggleOrientation = () => {
-    setIsPortrait(!isPortrait);
     setAttributes({
       isPortrait: !isPortrait
     });
@@ -82,25 +59,29 @@ function Edit({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
     onSelect: onSelectImage,
     allowedTypes: ['image'],
-    value: attributes.imageId,
+    value: imageId,
     render: ({
       open
     }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
       onClick: open
-    }, image ? 'Change Image' : 'Select Image')
-  }), image && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    src: image,
-    alt: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Selected image', 'custom-image'),
+    }, imageUrl ? 'Change Image' : 'Select Image')
+  }), imageUrl && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: imageUrl,
+    alt: altText,
     className: isPortrait ? 'portrait' : 'landscape'
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    style: {
-      marginTop: '20px'
-    }
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    tagName: "figcaption",
+    value: caption,
+    onChange: newCaption => setAttributes({
+      caption: newCaption
+    }),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Write caption...', 'custom-image'),
+    className: "wp-element-caption"
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: orientationLabel,
     checked: isPortrait,
     onChange: toggleOrientation
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Toggle the switch to change the orientation of the image. Current mode: ', 'custom-image'), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("strong", null, isPortrait ? 'Portrait' : 'Landscape'), ".")));
+  }));
 }
 
 /***/ }),
@@ -120,25 +101,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/block.json");
 
-/**
- * Registers a new block provided a unique name and an object defining its behavior.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * All files containing `style` keyword are bundled together. The code used
- * gets applied both to the front of your site and to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
-
-
-/**
- * Internal dependencies
- */
 
 
 const customImageIcon = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
@@ -149,18 +113,47 @@ const customImageIcon = (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("sv
 }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
   d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 4.5h14c.3 0 .5.2.5.5v8.4l-3-2.9c-.3-.3-.8-.3-1 0L11.9 14 9 12c-.3-.2-.6-.2-.8 0l-3.6 2.6V5c-.1-.3.1-.5.4-.5zm14 15H5c-.3 0-.5-.2-.5-.5v-2.4l4.1-3 3 1.9c.3.2.7.2.9-.1L16 12l3.5 3.4V19c0 .3-.2.5-.5.5z"
 }));
-
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
-  /**
-   * @see ./edit.js
-   */
   icon: customImageIcon,
-  edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"]
+  edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
+  attributes: {
+    imageUrl: {
+      type: 'string',
+      default: ''
+    },
+    imageId: {
+      type: 'number'
+    },
+    isPortrait: {
+      type: 'boolean',
+      default: false
+    },
+    altText: {
+      type: 'string',
+      default: ''
+    },
+    caption: {
+      type: 'string',
+      default: ''
+    }
+  },
+  save: ({
+    attributes
+  }) => {
+    const {
+      imageUrl,
+      isPortrait,
+      altText,
+      caption
+    } = attributes;
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", {
+      className: `wp-block-image size-large ${isPortrait ? 'portrait' : 'landscape'}`
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      src: imageUrl,
+      alt: altText,
+      className: `wp-image-${attributes.imageId}`
+    }), caption && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("figcaption", null, caption));
+  }
 });
 
 /***/ }),
