@@ -1,3 +1,6 @@
+## What This Plugin Does
+This plugin creates a custom image block for the geoffcordner.com site. Because this site alternates between vertical (portrait) and horizontal (landscape) images, a class for portrait or landscape can be applied directly in the block, without needing to manually add custom classes. It also removes all uneccessary options like image size, alignment, etc. because those do not change.
+
 ## What to Include in the Plugin Upload
 
 ### PHP Files
