@@ -7,14 +7,11 @@
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Custom image block that adds classes for portrait and landscape images.",
-	"example": {},
 	"supports": {
-		"html": false
+		"html": true
 	},
 	"textdomain": "custom-image",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php",
-	"viewScript": "file:./view.js"
+	"style": "file:./style-index.css"
 }
